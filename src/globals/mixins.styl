@@ -1,0 +1,127 @@
+phoneWidth = 768px
+tabletWidth = 992px
+desktopWidth = 1024px
+fullWidth = 1280px
+fullHDWidth = 1920px
+
+phone = "(max-width: " + (phoneWidth - 1) + ")"
+tablet = "(max-width: " + (tabletWidth - 1) + ")"
+desktop = "(max-width: " + (desktopWidth - 1) + ")"
+fullWidth = "(max-width: " + (fullWidth - 1) + ")"
+fullHDWidth = "(max-width: " + (fullHDWidth - 1) + ")"
+
+// pixels to rem
+calculateRem($size)
+  ($size / 14) * 1rem
+
+fsize($size)
+  font-size calculateRem($size)
+
+// background-transparency
+background-transparency(color, alpha = 1)
+    ms-color = argb(color, alpha)
+    background rgba(color, alpha)
+    zoom 1
+    //background transparent
+    filter s('progid:DXImageTransform.Microsoft.gradient(startColorstr=%s,endColorstr=%s)', ms-color, ms-color)
+    //&:nth-child(n)
+    //    filter none
+
+hex(decimal)
+    hex-value = ('0') ('1') ('2') ('3') ('4') ('5') ('6') ('7') ('8') ('9') ('A') ('B') ('C') ('D') ('E') ('F')
+    unquote(hex-value[floor(decimal / 16)] + hex-value[floor(decimal % 16)])
+
+argb(color, alpha = 1)
+    unquote('#') + hex(alpha * 255) + hex(red(color)) + hex(green(color)) + hex(blue(color))
+
+background-gradient(fromColor, toColor, alpha1 = 1, alpha2 = 1)
+    from = rgba(fromColor, alpha1)
+    to = rgba(toColor, alpha2)
+    ms-from = argb(fromColor, alpha1)
+    ms-to = argb(toColor, alpha2)
+    // background-color from
+    background-image linear-gradient(top, from 0%,to 100%)
+    filter s("progid:DXImageTransform.Microsoft.gradient(startColorstr='%s', endColorstr='%s', GradientType=0)", ms-from, ms-to)
+    zoom 1
+    //border-radius 0 \0/
+
+//rotate
+mx-rotate()
+    -webkit-transform rotate(arguments)
+    -moz-transform rotate(arguments)
+    -ms-transform rotate(arguments)
+    -o-transform rotate(arguments)
+    transform rotate(arguments)
+
+fit-image()
+    text-align center
+    letter-spacing 0
+    font-size 0
+    &:after
+        content ""
+        display inline-block
+        height 100%
+        width 0
+        vertical-align middle
+    >img
+        letter-spacing normal
+        font-size 12px
+        border 0 none
+        margin 0 auto
+        max-width 100%
+        max-height 100%
+        display inline-block
+        vertical-align middle
+
+center-block()
+    text-align center
+    letter-spacing 0
+    font-size 0
+    &:after
+        content ""
+        display inline-block
+        height 100%
+        width 0
+        vertical-align middle
+    >div
+    >span
+        text-align left
+        letter-spacing normal
+        font-size 14px
+        margin 0 auto
+        display inline-block
+        vertical-align middle
+
+icon(num, fontSize = inherit, normalColor = false, hoverColor = false, activeColor = false)
+    &:before
+        if normalColor
+            color normalColor
+        display inline-block
+        font-size fontSize
+        font-family 'edaicons'
+        speak none
+        font-style normal
+        font-weight normal
+        font-variant normal
+        text-transform none
+        line-height 1
+        -webkit-font-smoothing antialiased
+        -moz-osx-font-smoothing grayscale
+        content unquote('"\' + num + '"')
+    if hoverColor
+        &:hover:before
+            color hoverColor
+    if activeColor
+        &:active:before
+            color activeColor
+
+iconParams()
+    font-family 'edaicons'
+    speak none
+    font-style normal
+    font-weight normal
+    font-variant normal
+    text-transform none
+    line-height 1
+    -webkit-font-smoothing antialiased
+    -moz-osx-font-smoothing grayscale

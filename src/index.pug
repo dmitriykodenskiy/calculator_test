@@ -1,0 +1,35 @@
+extends layouts/root
+
+block content
+	+b.calc
+		+e.inner
+			+e.H2.heading= main.title
+			.currency-wrapper
+				.currency.active= main.currency.us
+				.currency= main.currency.ua
+		+e.inner
+			+e.SPAN.section-name= main.firstRange.title
+			+e.INPUT.range(type="range" min=main.firstRange.min max=main.firstRange.max value=main.firstRange.value)
+		+e.inner
+			+e.SPAN.section-name= main.secondRange.title
+			+e.INPUT.range_time(type="range" min=main.secondRange.min max=main.secondRange.max value=main.secondRange.value)
+		+e.inner
+			+e.SPAN.section-name= main.paymentOption.title
+			+b.payment-choice
+				+e.choice_monthly.active= main.paymentOption.option1
+				+e.choice_annualy= main.paymentOption.option2
+		+e.inner
+			+e.SPAN.section-name= main.rate.title
+			+b.rate
+				+e.percent= main.rate.num
+				+e.mask= main.rate.mask
+		hr
+		+e.H2.heading= main.result.title
+		+b.total
+			+e.inner
+				+e.sum= main.result.total.sum
+				+e.mask= main.result.total.mask
+			+e.inner
+				+e.sum= main.result.perMonth.sum
+				+e.mask= main.result.perMonth.mask
+		+b.A.button(href="calculation.html")= main.button
