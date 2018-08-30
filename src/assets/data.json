@@ -1,0 +1,17 @@
+{
+	percentage:{
+		currency:{
+			usd:{
+				payment:{
+					monthly:{
+						to6: "12%",
+						from6to11: "16%",
+						from12to23: "18%",
+						from24to35: "19%",
+						from36: "20%"
+					}
+				}
+			}
+		}
+	}
+}
