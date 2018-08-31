@@ -1,169 +1,62 @@
-let currency = document.querySelector('.active_cur').innerText;
-let payment = document.querySelector('.active_paym').innerText;
-let minSum = document.querySelector('.calc__sum_min');
-let maxSum = document.querySelector('.calc__sum_max');
-let sumRangeInput = document.querySelector('.calc__range_sum');
-let termRangeInput = document.querySelector('.calc__range_time');
-let percent = 12;
-let sumRangeLabel = document.querySelector('.calc__sum_value');
-let sumMonthlyTotal = document.querySelector('.total__sum_monthly');
-let sumAnnualyTotal = document.querySelector('.total__sum_annualy');
+var FadeTransition = Barba.BaseTransition.extend({
+  start: function() {
+    /**
+     * This function is automatically called as soon the Transition starts
+     * this.newContainerLoading is a Promise for the loading of the new container
+     * (Barba.js also comes with an handy Promise polyfill!)
+     */
 
-$(".currency").bind('click', function(){
-	$('.active_cur').removeClass('active active_cur');
-	$(this).addClass('active active_cur');
-	currency = document.querySelector('.active_cur').innerText;
-	
-	procentChange();
-	incomeCalc();
-});
+    // As soon the loading is finished and the old page is faded out, let's fade the new page
+    Promise
+      .all([this.newContainerLoading, this.fadeOut()])
+      .then(this.fadeIn.bind(this));
+  },
 
-$(".payment-choice__choice").bind('click', function(){
-	$('.active_paym').removeClass('active active_paym');
-	$(this).addClass('active active_paym');
-	payment = document.querySelector('.active_paym').innerText;
-	
-	procentChange();
-	incomeCalc();
-});
+  fadeOut: function() {
+    /**
+     * this.oldContainer is the HTMLElement of the old Container
+     */
 
-function fSumRangeChange() {
-  let nLabelWidth = parseFloat(window.getComputedStyle(sumRangeLabel).width);
-  sumRangeLabel.style.left = parseInt(sumRangeInput.value / sumRangeInput.max * 100 - 10) + '%';
-	
-  procentChange();
-  incomeCalc();
-}
+    return $(this.oldContainer).animate({ opacity: 0 }).promise();
+  },
 
-function fTermRangeChange() {
-  let oRangeInput = document.querySelector('.calc__range_time');
-  let oRangeLabel = document.querySelector('.calc__term_value');
-  oRangeLabel.innerText = termRangeInput.value + 'мес';
-  let nLabelWidth = parseFloat(window.getComputedStyle(oRangeLabel).width);
-  oRangeLabel.style.left = parseInt(termRangeInput.value / termRangeInput.max * 100 - 12) + '%';
-  
-  procentChange();
-  incomeCalc();
-}
+  fadeIn: function() {
+    /**
+     * this.newContainer is the HTMLElement of the new Container
+     * At this stage newContainer is on the DOM (inside our #barba-container and with visibility: hidden)
+     * Please note, newContainer is available just after newContainerLoading is resolved!
+     */
 
-function procentChange(){
-  if (currency === "USD" && currency !== null && currency !== undefined) {
-	  
-	sumRangeLabel.innerText = '$' + sumRangeInput.value;
-	sumRangeInput.min = 1000;
-	sumRangeInput.max = 100000;
-	minSum.innerText = '$' + sumRangeInput.min;
-	maxSum.innerText = '$' + sumRangeInput.max;
-	  
-    if (payment === "ежемесячно" && payment !== null && payment !== undefined) {
-      if (parseInt(termRangeInput.value) < 6) {
-        document.querySelector('.rate__percent').innerText = "12%";
-      } else if (parseInt(termRangeInput.value) > 5 && parseInt(termRangeInput.value) < 12) {
-        document.querySelector('.rate__percent').innerText = "16%";
-      } else if (parseInt(termRangeInput.value) > 11 && parseInt(termRangeInput.value) < 24) {
-        document.querySelector('.rate__percent').innerText = "18%";
-      } else if (parseInt(termRangeInput.value) > 23 && parseInt(termRangeInput.value) < 36) {
-        document.querySelector('.rate__percent').innerText = "19%";
-      } else {
-        document.querySelector('.rate__percent').innerText = "20%";
-      }
-    } else if (payment === "в конце срока" && payment !== null && payment !== undefined) {
-      if (parseInt(termRangeInput.value) < 6) {
-        document.querySelector('.rate__percent').innerText = "13%";
-      } else if (parseInt(termRangeInput.value) > 5 && parseInt(termRangeInput.value) < 12) {
-        document.querySelector('.rate__percent').innerText = "17%";
-      } else if (parseInt(termRangeInput.value) > 11 && parseInt(termRangeInput.value) < 24) {
-        document.querySelector('.rate__percent').innerText = "20%";
-      } else if (parseInt(termRangeInput.value) > 23 && parseInt(termRangeInput.value) < 36) {
-        document.querySelector('.rate__percent').innerText = "21%";
-      } else {
-        document.querySelector('.rate__percent').innerText = "22%";
-      }
-    }
-  } else if (currency === "UAH" && currency !== null && currency !== undefined) {
-	  
-	sumRangeLabel.innerText = sumRangeInput.value + 'грн';
-	sumRangeInput.min = 10000;
-	sumRangeInput.max = 200000;
-	minSum.innerText = sumRangeInput.min + 'грн';
-	maxSum.innerText = sumRangeInput.max + 'грн';
-	  
-    if (payment === "ежемесячно" && payment !== null && payment !== undefined) {
-      if (parseInt(termRangeInput.value) < 6) {
-        document.querySelector('.rate__percent').innerText = "21%";
-      } else if (parseInt(termRangeInput.value) > 5 && parseInt(termRangeInput.value) < 12) {
-        document.querySelector('.rate__percent').innerText = "23%";
-      } else if (parseInt(termRangeInput.value) > 11 && parseInt(termRangeInput.value) < 24) {
-        document.querySelector('.rate__percent').innerText = "25%";
-      } else if (parseInt(termRangeInput.value) > 23 && parseInt(termRangeInput.value) < 36) {
-        document.querySelector('.rate__percent').innerText = "28%";
-      } else {
-        document.querySelector('.rate__percent').innerText = "31%";
-      }
-    } else if (payment === "в конце срока" && payment !== null && payment !== undefined) {
-      if (parseInt(termRangeInput.value) < 6) {
-        document.querySelector('.rate__percent').innerText = "22%";
-      } else if (parseInt(termRangeInput.value) > 5 && parseInt(termRangeInput.value) < 12) {
-        document.querySelector('.rate__percent').innerText = "24%";
-      } else if (parseInt(termRangeInput.value) > 11 && parseInt(termRangeInput.value) < 24) {
-        document.querySelector('.rate__percent').innerText = "27%";
-      } else if (parseInt(termRangeInput.value) > 23 && parseInt(termRangeInput.value) < 36) {
-        document.querySelector('.rate__percent').innerText = "30%";
-      } else {
-        document.querySelector('.rate__percent').innerText = "33%";
-      }
-    }
+    var _this = this;
+    var $el = $(this.newContainer);
+
+    $(this.oldContainer).hide();
+
+    $el.css({
+      visibility : 'visible',
+      opacity : 0
+    });
+
+    $el.animate({ opacity: 1 }, 400, function() {
+      /**
+       * Do not forget to call .done() as soon your transition is finished!
+       * .done() will automatically remove from the DOM the old Container
+       */
+
+      _this.done();
+    });
   }
-}
-procentChange();
+});
 
-function incomeCalc(){
-	let incomePercent = (parseInt(document.querySelector('.rate__percent').innerText))/100;
-	let depoValue = parseInt(sumRangeInput.value);
-	let totalMonthly;
-	let totalAnnualy;
-	if (currency === "USD" && currency !== null && currency !== undefined){
-		if(payment === "ежемесячно" && payment !== null && payment !== undefined){
-			totalMonthly = Math.ceil(depoValue * (incomePercent/12));
-			
-			sumMonthlyTotal.innerText =  '$' + totalMonthly;
-			
-			totalAnnualy = Math.ceil(depoValue * incomePercent);
-			
-			sumAnnualyTotal.innerText =  '$' + totalAnnualy;
-			
-		} else if(payment === "в конце срока" && payment !== null && payment !== undefined){
-			
-			totalMonthly = Math.ceil((depoValue * (Math.pow((1 + incomePercent/12), 12)) - depoValue)/12);
-			
-			sumMonthlyTotal.innerText = '$' + totalMonthly;
-			
-			totalAnnualy = Math.ceil(depoValue * (Math.pow((1 + incomePercent/12), 12)) - depoValue);
-			
-			sumAnnualyTotal.innerText = '$' + totalAnnualy;
-		}
-		
-	} else if(currency === "UAH" && currency !== null && currency !== undefined){
-		if(payment === "ежемесячно" && payment !== null && payment !== undefined){
-			totalMonthly = Math.ceil(depoValue * (incomePercent/12));
-			
-			sumMonthlyTotal.innerText = totalMonthly + 'грн';
-			
-			totalAnnualy = Math.ceil(depoValue * incomePercent);
-			
-			sumAnnualyTotal.innerText = totalAnnualy + 'грн';
-			
-		} else if(payment === "в конце срока" && payment !== null && payment !== undefined){
-			totalMonthly = Math.ceil((depoValue * (Math.pow((1 + incomePercent/12), 12)) - depoValue)/12);
-			
-			sumMonthlyTotal.innerText = totalMonthly + 'грн';
-			
-			totalAnnualy = Math.ceil(depoValue * (Math.pow((1 + incomePercent/12), 12)) - depoValue);
-			
-			sumAnnualyTotal.innerText = totalAnnualy + 'грн';
-		}
-		
-	}
-		
-}
-incomeCalc();
+/**
+ * Next step, you have to tell Barba to use the new Transition
+ */
+
+Barba.Pjax.getTransition = function() {
+  /**
+   * Here you can use your own logic!
+   * For example you can use different Transition based on the current page or link...
+   */
+
+  return FadeTransition;
+};

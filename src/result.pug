@@ -1,0 +1,12 @@
+extends layouts/root
+
+block content
+	div(id="barba-wrapper")
+		.barba-container
+			+b.calc
+				each item, index in result
+					- resultClass = "result_" + (index + 1);
+						+e.inner
+							+e.H2.heading= item
+							+e.SPAN(class=resultClass)
+	+b.A.button(href="index.html")= main.back

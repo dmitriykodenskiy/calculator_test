@@ -1,43 +1,45 @@
 extends layouts/root
 
 block content
-	+b.calc
-		+e.inner
-			+e.H2.heading= main.title
-			.currency-wrapper
-				.currency.active.active_cur= main.currency.us
-				.currency= main.currency.ua
-		+e.inner
-			+e.SPAN.section-name= main.firstRange.title
-			+e.range-wrapper
-				+e.INPUT.range_sum(type="range" value=main.firstRange.value step="1000" OnInput="fSumRangeChange();")
-				+e.sum_min
-				+e.sum_value= "$" + main.firstRange.value
-				+e.sum_max
-		+e.inner
-			+e.SPAN.section-name= main.secondRange.title
-			+e.range-wrapper
-				+e.INPUT.range_time(type="range" min=main.secondRange.min max=main.secondRange.max value=main.secondRange.value step="1" OnInput="fTermRangeChange();")
-				+e.term_min= main.secondRange.min + 'мес'
-				+e.term_value= main.secondRange.value + 'мес'
-				+e.term_max= main.secondRange.max + 'мес'
-		+e.inner
-			+e.SPAN.section-name= main.paymentOption.title
-			+b.payment-choice
-				+e.choice_monthly.active_paym= main.paymentOption.option1
-				+e.choice_annualy= main.paymentOption.option2
-		+e.inner
-			+e.SPAN.section-name= main.rate.title
-			+b.rate
-				+e.percent= main.rate.num
-				+e.mask= main.rate.mask
-		hr
-		+e.H2.heading= main.result.title
-		+b.total
-			+e.inner
-				+e.sum_annualy= main.result.total.sum
-				+e.mask= main.result.total.mask
-			+e.inner
-				+e.sum_monthly= main.result.perMonth.sum
-				+e.mask= main.result.perMonth.mask
-		+b.A.button(href="calculation.html")= main.button
+	div(id="barba-wrapper")
+		.barba-container
+			+b.calc
+				+e.inner
+					+e.H2.heading= main.title
+					.currency-wrapper
+						.currency.active.active_cur= main.currency.us
+						.currency= main.currency.ua
+				+e.inner
+					+e.SPAN.section-name= main.firstRange.title
+					+e.range-wrapper
+						+e.INPUT.range_sum(type="range" value=main.firstRange.value step="1000" OnInput="fSumRangeChange();")
+						+e.sum_min
+						+e.sum_value= "$" + main.firstRange.value
+						+e.sum_max
+				+e.inner
+					+e.SPAN.section-name= main.secondRange.title
+					+e.range-wrapper
+						+e.INPUT.range_time(type="range" min=main.secondRange.min max=main.secondRange.max value=main.secondRange.value step="1" OnInput="fTermRangeChange();")
+						+e.term_min= main.secondRange.min + 'мес'
+						+e.term_value= main.secondRange.value + 'мес'
+						+e.term_max= main.secondRange.max + 'мес'
+				+e.inner
+					+e.SPAN.section-name= main.paymentOption.title
+					+b.payment-choice
+						+e.choice_monthly.active_paym= main.paymentOption.option1
+						+e.choice_annualy= main.paymentOption.option2
+				+e.inner
+					+e.SPAN.section-name= main.rate.title
+					+b.rate
+						+e.percent= main.rate.num
+						+e.mask= main.rate.mask
+				hr
+				+e.H2.heading= main.result.title
+				+b.total
+					+e.inner
+						+e.sum_annualy= main.result.total.sum
+						+e.mask= main.result.total.mask
+					+e.inner
+						+e.sum_monthly= main.result.perMonth.sum
+						+e.mask= main.result.perMonth.mask
+	+b.A.button(href="result.html")= main.button
